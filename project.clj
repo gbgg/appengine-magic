@@ -1,4 +1,4 @@
-(defproject appengine-magic "0.5.1-SNAPSHOT"
+(defproject appengine-magic "0.6.0-SNAPSHOT"
   :description "Google App Engine library for Clojure."
   :url "https://github.com/gcv/cupboard"
   :min-lein-version "2.0.0"
@@ -19,11 +19,9 @@
                  [javax.servlet/jstl "1.1.2"] ; repackaged-appengine-jakarta-jstl-1.1.2.jar
                  [taglibs/standard "1.1.2"] ; repackaged-appengine-jakarta-standard-1.1.2.jar
                  [commons-el "1.0"]
-                 ;; main App Engine libraries
-                 [com.google.appengine/appengine-api-1.0-sdk "1.7.4"]
-                 [com.google.appengine/appengine-api-labs "1.7.4"]
-                 [com.google.appengine/appengine-api-stubs "1.7.4"]
-                 [com.google.appengine/appengine-local-runtime "1.7.4"]
-                 [com.google.appengine/appengine-local-runtime-shared "1.7.4"]
-                 [com.google.appengine/appengine-testing "1.7.4"]
-                 [com.google.appengine/appengine-tools-api "1.7.4"]])
+                 ;; main App Engine sdk libraries
+                 [com.google.appengine/appengine-api-1.0-sdk "1.7.6"]
+                 [com.google.appengine/appengine-api-labs "1.7.6"]
+                 [com.google.appengine/appengine-api-stubs "1.7.6"]
+                 [com.google.appengine/appengine-testing "1.7.6"]
+                 [com.google.appengine/appengine-tools-sdk "1.7.6"]])
