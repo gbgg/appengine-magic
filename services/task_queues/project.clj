@@ -1,16 +1,16 @@
-(defproject appengine-magic "0.6.0-SNAPSHOT"
+(defproject appengine-magic/service/task_queues "0.6.0-SNAPSHOT"
   :description "Google App Engine sdk for Clojure."
   :url "https://github.com/gcv/cupboard"
   :min-lein-version "2.0.0"
   :repositories {"releases" "http://appengine-magic-mvn.googlecode.com/svn/releases/"
                  "snapshots" "http://appengine-magic-mvn.googlecode.com/svn/snapshots/"}
   :exclusions [org.clojure/clojure]
-  :plugins [[lein-sub "0.2.4"]
+  :jar-name "magic-task_queues.jar"
+  :plugins [[lein-sub "0.2.1"]
             [codox "0.6.4"]]
-  :sub ["lib"
-        "services"]
-  :dependencies [[org.clojure/clojure "1.4.0"]
-                 [ring/ring-core "1.1.0"]
+  :dependencies [[appengine-magic/lib "0.6.0-SNAPSHOT"]
+                 [org.clojure/clojure "1.5.1"]
+;                 [ring/ring-core "1.1.0"]
                  [org.apache.commons/commons-exec "1.1"]
                  ;; App Engine supporting essentials
                  [javax.servlet/servlet-api "2.5"]

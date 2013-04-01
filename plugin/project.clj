@@ -1,4 +1,4 @@
-(defproject gaem "0.3.0-SNAPSHOT"
+(defproject magic "0.3.0-SNAPSHOT"
   :description "Leiningen plugin for appengine-magic sdk"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"

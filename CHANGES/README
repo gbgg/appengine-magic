@@ -1,0 +1,13 @@
+Removed:
+
+install-artifacts.sh - no longer needed with leiningen 2
+
+resources/  -  replaced by template
+
+leiningen_helpers.clj  - functionality no longer needed, replaced by template and plugin
+
+swank.clj  -  swank obsoleted by nrepl
+
+Moved:
+
+testing.clj - should not be in main lib

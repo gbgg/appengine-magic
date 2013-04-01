@@ -59,5 +59,5 @@
                  [ring/ring-devel "1.2.0-beta1"]
                  [hiccup "1.0.2"]
                  [org.clojure/tools.logging "0.2.3"]]
-  :profiles {:dev {:dependencies [[appengine-magic "0.6.0-SNAPSHOT"]]}}
+  :profiles {:dev {:dependencies [[appengine-magic "0.5.1-SNAPSHOT"]]}}
   :plugins [[gaem "0.3.0-SNAPSHOT"]])
