@@ -55,7 +55,7 @@ before deploying.
 Here's what you need to know to use the magic server for development.
 This assumes that you are using [compojure](git://github.com/weavejester/compojure.git) and [ring](https://github.com/ring-clojure/ring).
 
-#### Servlet config.
+#### Servlet config and routing.
 
 Google App Engine for java is basically a servlet container.  So your
 application will implement one or more servlets, and you use
@@ -98,6 +98,15 @@ as a set of non-servlet handlers, you would include the complete path
 in your route definitions.  In other words, in the above example, your
 route should look like:
 
-```clojure (GET "/:widget" [widget] ... handle request```
+```clojure
+(GET "/:widget" [widget] ... handle request
+```
 
 since it will only see requests for /frobnicate (as per the web.xml).
+
+### Multiple servlets.
+
+The magic server only supports a single servlet, whose context will be
+"/".  But it's easy to test multiple servlets; all it takes is is a
+few trivial clojure functions that load the relevant code and then
+execute a restart command on the server.
