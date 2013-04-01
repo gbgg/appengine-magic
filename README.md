@@ -63,14 +63,14 @@ This assumes that you are using [compojure](git://github.com/weavejester/compoju
    http://example.org/frobnicate, you would put the following in your
    web.xml:
 
-	<servlet>
-	    <servlet-name>frobber</servlet-name>
-	        <servlet-class>frob.nicate</servlet-class>
-	</servlet>
-	<servlet-mapping>
-	    <servlet-name>frobber</servlet-name>
-	    <url-pattern>/frobnicate/*</url-pattern>
-	</servlet-mapping>
+    	<servlet>
+    	    <servlet-name>frobber</servlet-name>
+    	        <servlet-class>frob.nicate</servlet-class>
+    	</servlet>
+    	<servlet-mapping>
+    	    <servlet-name>frobber</servlet-name>
+    	    <url-pattern>/frobnicate/*</url-pattern>
+    	</servlet-mapping>
 
    Now you might think that in your frob/nicate.clj source file, you
    will set up routes and handlers like so:
