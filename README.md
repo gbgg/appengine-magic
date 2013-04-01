@@ -12,8 +12,8 @@ won't work.
  * lib - api only
 
  * server - repl-enabled emulation of the sdk dev server.  **CAVEAT**
-   The appengine-magic server does /not/ behave like th google dev
-   server (invoked via <sdk_home>/bin/dev_appserver.sh).  See below
+   The appengine-magic server does _not_ behave like the google dev
+   server (invoked via &lt;sdk_home&gt;/bin/dev_appserver.sh).  See below
    for details.
 
  * magic - leinigen plugin implementing tasks to build your project,
@@ -74,12 +74,11 @@ This assumes that you are using [compojure](git://github.com/weavejester/compoju
 
    Now you might think that in your frob/nicate.clj source file, you
    will set up routes and handlers like so:
-```
-(GET "/frobnicate/:widget" [widget]
+
+```(GET "/frobnicate/:widget" [widget]
   {:status 200
    :headers {"Content-Type" "text/plain"}
-   :body (format "frobbing widget %s" widget)})
-```
+   :body (format "frobbing widget %s" widget)})```
 
    And in fact this would work with the magic server; but it won't
    work with the dev server.  Because of the servlet mapping, a
