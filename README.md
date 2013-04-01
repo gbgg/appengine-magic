@@ -63,6 +63,7 @@ This assumes that you are using [compojure](git://github.com/weavejester/compoju
    http://example.org/frobnicate, you would put the following in your
    web.xml:
 
+```xml
     	<servlet>
     	    <servlet-name>frobber</servlet-name>
     	        <servlet-class>frob.nicate</servlet-class>
@@ -71,14 +72,17 @@ This assumes that you are using [compojure](git://github.com/weavejester/compoju
     	    <servlet-name>frobber</servlet-name>
     	    <url-pattern>/frobnicate/*</url-pattern>
     	</servlet-mapping>
+```
 
    Now you might think that in your frob/nicate.clj source file, you
    will set up routes and handlers like so:
 
-```(GET "/frobnicate/:widget" [widget]
+```clojure
+(GET "/frobnicate/:widget" [widget]
   {:status 200
    :headers {"Content-Type" "text/plain"}
-   :body (format "frobbing widget %s" widget)})```
+   :body (format "frobbing widget %s" widget)})
+```
 
    And in fact this would work with the magic server; but it won't
    work with the dev server.  Because of the servlet mapping, a
