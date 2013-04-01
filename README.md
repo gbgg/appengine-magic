@@ -55,43 +55,49 @@ before deploying.
 Here's what you need to know to use the magic server for development.
 This assumes that you are using [compojure](git://github.com/weavejester/compojure.git) and [ring](https://github.com/ring-clojure/ring).
 
- * Google App Engine for java is basically a servlet container.  So
-   your application will implement one or more servlets, and you use
-   war/WEB-INF/web.xml to configure them.  For example, if you want
-   servlet "frob.nicate" (that's a clojure namespace, corresponding to
-   source code in src/frob/nicate.clj) to service requests to
-   http://example.org/frobnicate, you would put the following in your
-   web.xml:
+#### Servlet config.
+
+Google App Engine for java is basically a servlet container.  So your
+application will implement one or more servlets, and you use
+war/WEB-INF/web.xml to configure them.  For example, if you want
+servlet "frob.nicate" (that's a clojure namespace, corresponding to
+source code in src/frob/nicate.clj) to service requests to
+http://example.org/frobnicate, you would put the following in your
+web.xml:
 
 ```xml
-    	<servlet>
-    	    <servlet-name>frobber</servlet-name>
-    	        <servlet-class>frob.nicate</servlet-class>
-    	</servlet>
-    	<servlet-mapping>
-    	    <servlet-name>frobber</servlet-name>
-    	    <url-pattern>/frobnicate/*</url-pattern>
-    	</servlet-mapping>
+<servlet>
+  <servlet-name>frobber</servlet-name>
+  <servlet-class>frob.nicate</servlet-class>
+</servlet>
+<servlet-mapping>
+  <servlet-name>frobber</servlet-name>
+  <url-pattern>/frobnicate/*</url-pattern>
+</servlet-mapping>
 ```
 
-   Now you might think that in your frob/nicate.clj source file, you
-   will set up routes and handlers like so:
+Now a request to http://example.org/frobnicate/paddystickers will be
+routed to your frob.nicate servlet for handling.  You might think that
+in your frob/nicate.clj source file, you will set up routes and
+handlers like so:
 
 ```clojure
-(GET "/frobnicate/:widget" [widget]
-  {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body (format "frobbing widget %s" widget)})
+(GET "/frobnicate/:widget" [widget] ... handle request
 ```
 
-   And in fact this would work with the magic server; but it won't
-   work with the dev server.  Because of the servlet mapping, a
-   request to http:www.example.org/frobnicate will be mapped to "/" by
-   the time it gets you your servlet.
+And in fact this would work with the magic server; but it won't work
+with the dev server.  Because of the servlet mapping, a request to
+http:www.example.org/frobnicate will be mapped to "/" by the time it
+gets you your servlet.
 
-   The upshot of this is that you want to design each of your servlets
-   to service "root routes", and then use web.xml to "mount" them at
-   different places in your website's namespace.  This is in contrast
-   to plain ol' routing outside of servlets.  If you were running your
-   code as a set of non-servlet handlers, you would include the
-   complete path in your route definitions.
+The upshot of this is that you want to design each of your servlets to
+service "root routes", and then use web.xml to "mount" them at
+different places in your website's namespace.  This is in contrast to
+plain ol' routing outside of servlets.  If you were running your code
+as a set of non-servlet handlers, you would include the complete path
+in your route definitions.  In other words, in the above example, your
+route should look like:
+
+```clojure (GET "/:widget" [widget] ... handle request```
+
+since it will only see requests for /frobnicate (as per the web.xml).
