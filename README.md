@@ -76,7 +76,7 @@ web.xml:
 </servlet-mapping>
 ```
 
-Now a request to http://example.org/frobnicate/paddystickers will be
+Now a request to http://example.org/frobnicate/doobsnickers will be
 routed to your frob.nicate servlet for handling.  You might think that
 in your frob/nicate.clj source file, you will set up routes and
 handlers like so:
@@ -88,23 +88,31 @@ handlers like so:
 And in fact this would work with the magic server; but it won't work
 with the dev server.  Because of the servlet mapping, a request to
 http:www.example.org/frobnicate will be mapped to "/" by the time it
-gets you your servlet.
+gets to your servlet.
 
 The upshot of this is that you want to design each of your servlets to
 service "root routes", and then use web.xml to "mount" them at
-different places in your website's namespace.  This is in contrast to
-plain ol' routing outside of servlets.  If you were running your code
-as a set of non-servlet handlers, you would include the complete path
-in your route definitions.  In other words, in the above example, your
-route should look like:
+different places in your website's namespace.  So during testing with
+magic server you will drop the path prefix; in our example you would
+send a request to e.g. http://example.org/doobsnickers instead of
+http://example.org/frobnicate/doobsnickers.
+
+In other words,
+in the above example, your route should look like:
 
 ```clojure
 (GET "/:widget" [widget] ... handle request
 ```
 
-since it will only see requests for /frobnicate (as per the web.xml).
+On magic server, it will service requests for /doobsnickers; on
+devserver (and gae), given the above web.xml it will service requests
+for /frobnicate/doobsnickers.
 
-### Multiple servlets.
+since it will only see requests for /frobnicate (as per the web.xml).
+This is in contrast to plain ol' routing outside of servlets.  If you
+were running your code as a set of non-servlet handlers, you would
+include the complete path in your route definitions.  ### Multiple
+servlets.
 
 The magic server only supports a single servlet, whose context will be
 "/".  But it's easy to test multiple servlets; all it takes is is a
