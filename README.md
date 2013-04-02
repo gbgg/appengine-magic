@@ -105,19 +105,26 @@ The magic server only supports a single servlet, and it
 programmatically sets its context to "/".  You tell it which servlet
 to use when you start it by calling
 
-```clojure (appengine-magic.core/start ```
+```clojure
+(appengine-magic.core/start
+```
 
 In other words, it does **not** read your web.xml file.  But it's easy
 to test multiple servlets; all it takes is is a few trivial clojure
 functions that load the relevant code and then execute a restart
 command on the server.  For an example, see the :repl-options key of
-the project.clj file example produced by ```shell lein new
-appengine-magic```.  That code defines two functions named after the
-two servlets implemented by the project.  To switch from one servlet
-to another all you need to do is execute the appropriate function as a
-command at the repl prompt; for example: ```clojure user=> (user)```.
-This reloads (and thus re-evaluates) the code in user.clj and then
-restarts the magic server with myproj-user as the handler.
+the project.clj file example produced by
+
+```shell
+$ lein new appengine-magic ...
+```
+
+That code defines two functions named after the two servlets
+implemented by the project.  To switch from one servlet to another all
+you need to do is execute the appropriate function as a command at the
+repl prompt; for example: ```clojure user=> (user)```.  This reloads
+(and thus re-evaluates) the code in user.clj and then restarts the
+magic server with myproj-user as the handler.
 
 The only major drawback is you won't be able to test servlets that
 talk to each other in the magic server; you'll have to use the
