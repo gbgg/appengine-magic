@@ -8,7 +8,6 @@
 (defn open-resource-stream [resource-name]
   (-> (clojure.lang.RT/baseLoader) (.getResourceAsStream resource-name)))
 
-
 (defn resource-url [resource-name]
   (-> (clojure.lang.RT/baseLoader) (.getResource resource-name)))
 
@@ -27,7 +26,8 @@
                            (catch java.security.AccessControlException ace
                              :production)))))
 
-
+;;gar move the ApiProxy env stuff to an Env function or record
+;; (basically a metaservice)
 (defn appengine-app-id []
   (try
     (-> (ApiProxy/getCurrentEnvironment) .getAppId)
@@ -42,6 +42,6 @@
       (throw (RuntimeException. "the server must be running" npe)))))
 
 
-(if (= :interactive (appengine-environment-type))
-    (load "core_local")
-    (load "core_google"))
+;; (if (= :interactive (appengine-environment-type))
+;;     (load "core_local")
+;;     (load "core_google"))

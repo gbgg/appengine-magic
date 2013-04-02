@@ -27,14 +27,6 @@
       (File. "../war")
       .getAbsolutePath))
 
-
-(defn appengine-base-url [& {:keys [https?] :or {https? false}}]
-  ;; NB: The https? argument is intentionally ignored. HTTPS is not supported
-  ;; for local environments.
-  (str "http://localhost:"
-       (str @appengine-magic.lib.local-env-helpers/*current-server-port*)))
-
-
 (defn wrap-war-static [app, #^String war-root]
   (fn [req]
     (let [#^String uri (:uri req)]

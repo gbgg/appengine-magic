@@ -1,5 +1,5 @@
 (ns appengine-magic.service.blobstore
-  (:require [appengine-magic.core :as core]
+  (:require [appengine-magic.lib :as core]
             [appengine-magic.service.datastore :as ds]
             [appengine-magic.service.url-fetch :as url])
   (:import [com.google.appengine.api.blobstore ByteRange BlobKey
@@ -9,6 +9,20 @@
 
 
 (defonce ^{:dynamic true} *blobstore-service* (atom nil))
+
+;;gar from local
+(defn appengine-base-url [& {:keys [https?] :or {https? false}}]
+  ;; NB: The https? argument is intentionally ignored. HTTPS is not supported
+  ;; for local environments.
+  (str "http://localhost:"
+       (str @appengine-magic.lib.local-env-helpers/*current-server-port*)))
+;;gar from core_google
+(defn appengine-base-url [& {:keys [https?] :or {https? false}}]
+  (when (= :dev-appserver (appengine-environment-type))
+    (throw (RuntimeException.
+            "appengine-magic.lib.core/appengine-base-url not supported in dev-appserver.sh")))
+  (str (if https? "https" "http")
+       "://" (appengine-app-id) ".appspot.com"))
 
 
 (defn get-blobstore-service []
