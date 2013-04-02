@@ -1,4 +1,4 @@
-(in-ns 'appengine-magic.lib.core)
+(in-ns 'appengine-magic.lib)
 
 (use 'appengine-magic.lib.local-env-helpers
      '[appengine-magic.lib.servlet :only [servlet]]
@@ -55,26 +55,6 @@
                         (wrap-war-static war-root#))
            :war-root war-root#})))
 
-
-(defn make-appengine-request-environment-filter []
-  (reify javax.servlet.Filter
-    (init [_ filter-config]
-      (.setAttribute (.getServletContext filter-config)
-                     "com.google.appengine.devappserver.ApiProxyLocal"
-                     (ApiProxy/getDelegate)))
-    (destroy [_])
-    (doFilter [_ req resp chain]
-      (let [all-cookies (.getCookies req)
-            login-cookie (when all-cookies
-                           (let [raw (first (filter #(= "dev_appserver_login" (.getName %))
-                                                    (.getCookies req)))]
-                             (when raw (.getValue raw))))
-            [user-email user-admin? _] (when login-cookie
-                                         (str/split login-cookie #":"))
-            thread-environment-proxy (make-thread-environment-proxy :user-email user-email
-                                                                    :user-admin? user-admin?)]
-        (ApiProxy/setEnvironmentForCurrentThread thread-environment-proxy))
-      (.doFilter chain req resp))))
 
 
 

@@ -15,6 +15,27 @@
 
 (defonce ^{:dynamic true} *server* (atom nil))
 
+
+(defn make-appengine-request-environment-filter []
+  (reify javax.servlet.Filter
+    (init [_ filter-config]
+      (.setAttribute (.getServletContext filter-config)
+                     "com.google.appengine.devappserver.ApiProxyLocal"
+                     (ApiProxy/getDelegate)))
+    (destroy [_])
+    (doFilter [_ req resp chain]
+      (let [all-cookies (.getCookies req)
+            login-cookie (when all-cookies
+                           (let [raw (first (filter #(= "dev_appserver_login" (.getName %))
+                                                    (.getCookies req)))]
+                             (when raw (.getValue raw))))
+            [user-email user-admin? _] (when login-cookie
+                                         (str/split login-cookie #":"))
+            thread-environment-proxy (make-thread-environment-proxy :user-email user-email
+                                                                    :user-admin? user-admin?)]
+        (ApiProxy/setEnvironmentForCurrentThread thread-environment-proxy))
+      (.doFilter chain req resp))))
+
 (defn start [appengine-app & {:keys [port join? high-replication in-memory]
                               :or {port 8080, join? false,
                                    high-replication false, in-memory false}}]
