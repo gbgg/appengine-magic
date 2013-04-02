@@ -1,10 +1,10 @@
-# gaem
+# magic
 
-gaem is a leiningen plugin for managing appengine-magic applications.
+magic is a leiningen plugin for managing appengine-magic applications.
 It replaces the plugin functionality of the appengine-magic package.
 
-It is designed to work with the results of gaem-template, which can be
-found at https://github.com/greynolds/gaem-template.
+It is designed to work with the results of appengine-magic template
+(.i.e. "lein new appengine-magic").
 
 **WARNING** Alpha software.  Seems to work for me but needs more
   bullet-proofing.  I wouldn't try to use it with existing projects.
@@ -19,20 +19,20 @@ found at https://github.com/greynolds/gaem-template.
 
 ## Installation
 
-Download from https://github.com/greynolds/gaem, cd to the dir, and
+Download from https://github.com/greynolds/magic, cd to the dir, and
 run "lein install" (remember this is alpha stuff; if it ever makes it
-to prod status it'll live on the web somewhere).  The gaem plugin is
-only useful for projects created by the gaem-template, which have:
+to prod status it'll live on the web somewhere).  The magic plugin is
+only useful for projects created by the magic-template, which have:
 
-  :plugins [[gaem "0.2.0-SNAPSHOT"]
+  :plugins [[magic "0.2.0-SNAPSHOT"]
 
 ## Usage
 
 This plugin tries to run the whole show from project.clj.
 
-Step 1.  Create a new appengine-magic project by using the gaem template:
+Step 1.  Create a new appengine-magic project by using the magic template:
 
-    $ lein new gaem myapp:app-id /path/to/gae/sdk
+    $ lein new magic myapp:app-id /path/to/gae/sdk
 
 Here myapp is the clojure appname and app-id is the GAE application
 ID.  The created app contains a few static files and two servlets, one
@@ -42,8 +42,8 @@ than the usual "Hello world" example.  Easier to subtract than to add.
 Step 2.  Configure the app - generate and install appengine-web.xml and web.xml, and install other source files to the war tree.
 
     $ cd myapp
-    $ lein gaem config  ## generates web.xml, appengine-web.xml, etc. from mustache files in etc, data in project.clj
-    $ lein gaem delein  ## copy jars from .m2 to war/WEB-INF/lib.
+    $ lein magic config  ## generates web.xml, appengine-web.xml, etc. from mustache files in etc, data in project.clj
+    $ lein magic delein  ## copy jars from .m2 to war/WEB-INF/lib.
       	   		## this is a requirement of the GAE
 			## development environment.
 
@@ -105,7 +105,7 @@ might think.
 
 Step 4.  Deploy to the cloud:
 
-    $ lein gaem deploy
+    $ lein magic deploy
 
 Don't forget to set the version number in project.clj first!
 
