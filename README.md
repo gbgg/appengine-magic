@@ -1,4 +1,4 @@
-# Appengine-Magic
+# Appengine-Magic (derived)
 
 ## Status
 
@@ -76,45 +76,49 @@ web.xml:
 </servlet-mapping>
 ```
 
-Now a request to http://example.org/frobnicate/doobsnickers will be
-routed to your frob.nicate servlet for handling.  You might think that
-in your frob/nicate.clj source file, you will set up routes and
-handlers like so:
+Note that you can have one servlet service multiple paths.  So in addition to the above let's add:
+
+```xml
+<servlet>
+  <servlet-name>defrobber</servlet-name>
+  <servlet-class>frob.nicate</servlet-class>
+</servlet>
+<servlet-mapping>
+  <servlet-name>defrobber</servlet-name>
+  <url-pattern>/defrob/*</url-pattern>
+</servlet-mapping>
+```
+
+Now a request to frob a doobsnickers
+(http://example.org/frobnicate/doobsnickers) or defrob
+(http://example.org/defrob/doobsnickers) will be routed to your
+frob.nicate servlet for handling:
 
 ```clojure
 (GET "/frobnicate/:widget" [widget] ... handle request
+(GET "/defrob/:widget" [widget] ... handle request
 ```
 
-And in fact this would work with the magic server; but it won't work
-with the dev server.  Because of the servlet mapping, a request to
-http:www.example.org/frobnicate will be mapped to "/" by the time it
-gets to your servlet.
+#### Multiple Servlets
 
-The upshot of this is that you want to design each of your servlets to
-service "root routes", and then use web.xml to "mount" them at
-different places in your website's namespace.  So during testing with
-magic server you will drop the path prefix; in our example you would
-send a request to e.g. http://example.org/doobsnickers instead of
-http://example.org/frobnicate/doobsnickers.
+The magic server only supports a single servlet, and it
+programmatically sets its context to "/".  You tell it which servlet
+to use when you start it by calling
 
-In other words,
-in the above example, your route should look like:
+```clojure (appengine-magic.core/start ```
 
-```clojure
-(GET "/:widget" [widget] ... handle request
-```
+In other words, it does **not** read your web.xml file.  But it's easy
+to test multiple servlets; all it takes is is a few trivial clojure
+functions that load the relevant code and then execute a restart
+command on the server.  For an example, see the :repl-options key of
+the project.clj file example produced by ```shell lein new
+appengine-magic```.  That code defines two functions named after the
+two servlets implemented by the project.  To switch from one servlet
+to another all you need to do is execute the appropriate function as a
+command at the repl prompt; for example: ```clojure user=> (user)```.
+This reloads (and thus re-evaluates) the code in user.clj and then
+restarts the magic server with myproj-user as the handler.
 
-On magic server, it will service requests for /doobsnickers; on
-devserver (and gae), given the above web.xml it will service requests
-for /frobnicate/doobsnickers.
-
-since it will only see requests for /frobnicate (as per the web.xml).
-This is in contrast to plain ol' routing outside of servlets.  If you
-were running your code as a set of non-servlet handlers, you would
-include the complete path in your route definitions.  ### Multiple
-servlets.
-
-The magic server only supports a single servlet, whose context will be
-"/".  But it's easy to test multiple servlets; all it takes is is a
-few trivial clojure functions that load the relevant code and then
-execute a restart command on the server.
+The only major drawback is you won't be able to test servlets that
+talk to each other in the magic server; you'll have to use the
+devserver for that.
