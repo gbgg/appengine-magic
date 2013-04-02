@@ -38,7 +38,7 @@ won't work.
 
 ## Developing appengine-magic applications
 
-### Dev server.
+### devserver and magic server.
 
 You can use the Google sdk-supplied dev server ("devserver" for short)
 to test your app, but of course you don't get the interactive
