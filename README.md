@@ -122,9 +122,13 @@ $ lein new appengine-magic ...
 That code defines two functions named after the two servlets
 implemented by the project.  To switch from one servlet to another all
 you need to do is execute the appropriate function as a command at the
-repl prompt; for example: ```clojure user=> (user)```.  This reloads
-(and thus re-evaluates) the code in user.clj and then restarts the
-magic server with myproj-user as the handler.
+repl prompt; for example:
+```clojure
+user=> (user)
+```
+
+This reloads (and thus re-evaluates) the code in user.clj and then
+restarts the magic server with myproj-user as the handler.
 
 The only major drawback is you won't be able to test servlets that
 talk to each other in the magic server; you'll have to use the
