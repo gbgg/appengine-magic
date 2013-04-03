@@ -1,4 +1,4 @@
-(ns appengine-magic.lib.utils
+(ns appengine-magic.kernel.utils
   (:import [java.io File FileInputStream FileWriter InputStream OutputStream]
            java.nio.ByteBuffer
            [java.nio.channels Channel Channels ReadableByteChannel WritableByteChannel]

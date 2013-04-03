@@ -1,14 +1,14 @@
 (in-ns 'appengine-magic.lib)
 
-(use 'appengine-magic.lib.local-env-helpers
-     '[appengine-magic.lib.servlet :only [servlet]]
-     '[appengine-magic.lib.swank :only [wrap-swank]]
+(use 'appengine-magic.kernel.local-env-helpers
+     '[appengine-magic.kernel.servlet :only [servlet]]
+     '[appengine-magic.kernel.swank :only [wrap-swank]]
      '[ring.middleware.file :only [wrap-file]]
      '[ring.middleware.file-info :only [wrap-file-info]])
 
 (require '[clojure.string :as str]
-         '[appengine-magic.lib.jetty :as jetty]
-         '[appengine-magic.lib.blobstore-upload :as blobstore-upload])
+         '[appengine-magic.kernel.jetty :as jetty]
+         '[appengine-magic.kernel.blobstore-upload :as blobstore-upload])
 
 (import java.io.File
         com.google.apphosting.api.ApiProxy)

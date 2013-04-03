@@ -4,8 +4,8 @@
 ;;; blacklisted in App Engine.
 
 
-(ns appengine-magic.lib.servlet
-  (:use [appengine-magic.lib.utils :only [copy-stream]])
+(ns appengine-magic.kernel.servlet
+  (:use [appengine-magic.kernel.utils :only [copy-stream]])
   (:import [java.io File FileInputStream InputStream ByteArrayInputStream OutputStream]
            [javax.servlet.http HttpServlet HttpServletRequest HttpServletResponse]))
 

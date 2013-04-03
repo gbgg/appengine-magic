@@ -1,4 +1,4 @@
-(ns appengine-magic.lib.core
+(ns appengine-magic.kernel.core
   (:import com.google.apphosting.api.ApiProxy))
 
 

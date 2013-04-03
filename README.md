@@ -9,15 +9,23 @@ won't work.
 
 ## Structure
 
- * lib - api only
+ * API - the implementation has the usual kernel-and-hull structure:
 
- * server - repl-enabled emulation of the sdk dev server.  **CAVEAT**
-   The appengine-magic server does _not_ behave like the google dev
-   server (invoked via &lt;sdk_home&gt;/bin/dev_appserver.sh).  See below
-   for details.
+   * kernel - kernel api only; this involves very little code.
+
+   * services - most of the functionality is implemented as "services"
+     (e.g. datastore, user, channel, etc.) ; each service is packaged
+     as a separate jar so you can pick and choose; a "services
+     uberjar" containing all of them is also provided.
+
+ * jetty - a dev/test server embedding jetty without servlet container
+   services.  Supports rapid interactive (repl-based) development at
+   the cost of not completely emulating the GAE environment.
 
  * magic - leinigen plugin implementing tasks to build your project,
-   run the magic server, deploy to google, etc.
+   deploy to google, etc.  In particular, commands to run either the
+   official GAE devserver or the appengine-magic jetty server for
+   local development and testing.
 
 ## Libraries
 

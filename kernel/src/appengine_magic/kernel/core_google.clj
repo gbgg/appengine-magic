@@ -1,4 +1,4 @@
-(in-ns 'appengine-magic.lib.core)
+(in-ns 'appengine-magic.kernel.core)
 
 (import '[java.io File FileInputStream BufferedInputStream])
 
