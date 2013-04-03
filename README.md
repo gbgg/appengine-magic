@@ -25,36 +25,39 @@ won't work.
 
 ## Libraries
 
- * appengine-magic lib
- * appengine-magic services
- * appengine-magic service user
- * appengine-magic service datastore
+ * appengine-magic/kernel
+ * appengine-magic/services
+ * appengine-magic.service/user
+ * appengine-magic.service/datastore
  * etc.
 
-## Installation
+## Installation (NOT YET RELEASED)
 
-    [appengine-magic/lib "x.y.z"]
+    [appengine-magic/kernel "x.y.z"]
     [appengine-magic/services "x.y.z"]
     [appengine-magic/service/user "x.y.z"]
     [appengine-magic/service/datastore "x.y.z"]
     etc.
     [appengine-magic "x.y.z"] ;; everything
 
+For now you have to clone the repo, build the lib, and "lein install"
+to make it available on your local system.
+
 ## Developing appengine-magic applications
 
-### devserver and magic server.
+### devserver and magic
 
 You can use the Google sdk-supplied dev server ("devserver" for short)
 to test your app, but of course you don't get the interactive
 repl-based joyosity treasured by clojurians.  For that you have to use
-the appengine-magic server ("magic server" for short).  However, the
-magic server does not behave like the devserver; for example, it does
-not read your web.xml deployment descriptor and it doesn't set the
-context root like a real servlet container.  The magic server is an
-interim solution until we can figure out how to run the devserver in a
-repl.  So you can use the magic server to do rapid interactive
-development but you will always need to test with the devappserver
-before deploying.
+the appengine-magic server ("magic server" for short).  However,
+unlike the magic server does not provide servlet container services.
+So it doesn't behave like the devserver; for example, it does not read
+your web.xml deployment descriptor and it doesn't set the context root
+like a real servlet container.  On the plus side, it is much faster;
+code changes are reloaded almost instantly in the magic server, but to
+get the same effect in the devserver you have to reload the entire
+context, which is painfully slow.
 
 Here's what you need to know to use the magic server for development.
 This assumes that you are using [compojure](git://github.com/weavejester/compojure.git) and [ring](https://github.com/ring-clojure/ring).
@@ -103,21 +106,29 @@ frob.nicate servlet for handling:
 (GET "/defrob/:widget" [widget] ... handle request
 ```
 
+The important thing to note here is the role of the servlet container.
+You can run the same "webapp" code with or without a servlet container
+(provided you do not make explicit calls to the container service,
+etc).  [Etc....]
+
 #### Multiple Servlets
 
-The magic server only supports a single servlet, and it
-programmatically sets its context to "/".  You tell it which servlet
+The magic server only supports a single handler, and it
+programmatically sets its context to "/".  You tell it which handler
 to use when you start it by calling
 
 ```clojure
-(appengine-magic.core/start
+(appengine-magic.core/start myhandler)
 ```
 
-In other words, it does **not** read your web.xml file.  But it's easy
-to test multiple servlets; all it takes is is a few trivial clojure
-functions that load the relevant code and then execute a restart
-command on the server.  For an example, see the :repl-options key of
-the project.clj file example produced by
+*Note* that we call it a "handler"; that's because it isn't a servlet
+ if it isn't running in a servlet container.
+
+In other words, the magic server does **not** read your web.xml file.
+But it's easy to test multiple servlets; all it takes is is a few
+trivial clojure functions that load the relevant code and then execute
+a restart command on the server.  For an example, see the
+:repl-options key of the project.clj file example produced by
 
 ```shell
 $ lein new appengine-magic ...
@@ -137,3 +148,11 @@ restarts the magic server with myproj-user as the handler.
 The only major drawback is you won't be able to test servlets that
 talk to each other in the magic server; you'll have to use the
 devserver for that.
+
+##### devserver
+
+To reload servlets in the devserver (or in dev_appserver.sh) go to
+localhost:8080/_ah_reloadwebapp/.  You'll get a 404, but it will cause
+a context reload.  So you can recompile your code and use this to
+reload the classes; but note that just evaluating your code isn't
+enough.
