@@ -10,18 +10,14 @@ won't work.
 ## Structure
 
  * API - the implementation has the usual kernel-and-hull structure:
-
    * kernel - kernel api only; this involves very little code.
-
-   * services - most of the functionality is implemented as "services"
+   * services - most of the GAE functionality is implemented as "services"
      (e.g. datastore, user, channel, etc.) ; each service is packaged
      as a separate jar so you can pick and choose; a "services
      uberjar" containing all of them is also provided.
-
  * jetty - a dev/test server embedding jetty without servlet container
    services.  Supports rapid interactive (repl-based) development at
    the cost of not completely emulating the GAE environment.
-
  * magic - leinigen plugin implementing tasks to build your project,
    deploy to google, etc.  In particular, commands to run either the
    official GAE devserver or the appengine-magic jetty server for
