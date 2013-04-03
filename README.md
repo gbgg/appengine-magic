@@ -7,6 +7,8 @@ of the codebase to make it conform to leiningen 2 patterns.  It is not
 finished, so don't bother downloading it and trying to use it- it
 won't work.
 
+_*This documentation is currently unstable and changes frequently.*_
+
 ## Structure
 
  * API - the implementation has the usual kernel-and-hull structure:
@@ -155,7 +157,7 @@ with in a repl myhandler as the root context ("/") handler.
 ##### devserver
 
 To reload servlets in the devserver (or in dev_appserver.sh) go to
-localhost:8080/_ah_reloadwebapp/.  You'll get a 404, but it will cause
+localhost:8080/_ah/reloadwebapp/.  You'll get a 404, but it will cause
 a context reload.  So you can recompile your code and use this to
 reload the classes; but note that just evaluating your code isn't
 enough.
