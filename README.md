@@ -118,7 +118,7 @@ programmatically sets its context to "/".  You tell it which handler
 to use when you start it by calling
 
 ```clojure
-(appengine-magic.core/start myhandler)
+(appengine-magic.jetty/start myhandler)
 ```
 
 *Note* that we call it a "handler"; that's because it isn't a servlet
@@ -148,6 +148,9 @@ restarts the magic server with myproj-user as the handler.
 The only major drawback is you won't be able to test servlets that
 talk to each other in the magic server; you'll have to use the
 devserver for that.
+
+The "lein magic jetty myhandler" command launches the magic server
+with in a repl myhandler as the root context ("/") handler.
 
 ##### devserver
 
