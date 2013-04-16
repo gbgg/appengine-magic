@@ -19,7 +19,9 @@ NB: conceptually this is a (composed) name, not an "operation".
 This doc contains a certain amount of thinking out loud, including
 ideas I've since abandoned.  I'll get it updated someday but in the
 meantime it should not be taken as a reliable description of what the
-code actually does, now.  Read the source for that.  Read this doc for
+code actually does, now.  Read the source for that, *especially the
+test cases in test/datastore/service_test.clj*.  They give examples of
+all (most) of the ways of using keys and entities.  Read this doc for
 some discussion of ideas and design alternatives.
 
 ### Concepts:
