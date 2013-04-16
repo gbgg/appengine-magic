@@ -1,3 +1,19 @@
+Caveat: originally I was thinking in terms of the datastore ("ds/ds")
+as a giant map, so putting a new entity would go like: (into ds/ds
+theEntity). This is discussed below.  I've since changed my mind and
+decided to tread ds/Entities as the giant map and to dispense with
+"into" and the like, on grounds that there is only One True Datastore,
+so all you can do is look up entities: (ds/Entities theKey).
+Operators like "into" are not needed because (conceptually at least)
+the DS already contains everything.  Obviously, the code behind the
+curtain "creates" Entity POJOs as needed, but from the user's
+perspective, there is only one way to use the ds/Entities map and that
+is to use it to construct a referring name like so:
+
+    (ds/Entities theKey)
+
+NB: conceptually this is a (composed) name, not an "operation".
+
 Concepts:
 
     ds/Keys, ds/Entities - platonic collections.  No object
