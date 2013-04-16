@@ -17,7 +17,10 @@ NB: conceptually this is a (composed) name, not an "operation".
 ## Other Caveat
 
 This doc contains a certain amount of thinking out loud, including
-ideas I've since abandoned.  I'll get it updated someday.
+ideas I've since abandoned.  I'll get it updated someday but in the
+meantime it should not be taken as a reliable description of what the
+code actually does, now.  Read the source for that.  Read this doc for
+some discussion of ideas and design alternatives.
 
 ### Concepts:
 
