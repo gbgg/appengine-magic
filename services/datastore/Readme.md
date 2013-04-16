@@ -14,7 +14,12 @@ is to use it to construct a referring name like so:
 
 NB: conceptually this is a (composed) name, not an "operation".
 
-Concepts:
+## Other Caveat
+
+This doc contains a certain amount of thinking out loud, including
+ideas I've since abandoned.  I'll get it updated someday.
+
+### Concepts:
 
     ds/Keys, ds/Entities - platonic collections.  No object
     life-cycle, only naming.
