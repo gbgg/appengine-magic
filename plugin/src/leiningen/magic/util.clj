@@ -1,55 +1,49 @@
-;; from heroku
-
 (ns leiningen.magic.util
-  (:require [clojure.java.io :as io]))
-  ;; (:import (com.magic.api.command.login BasicAuthLogin)
-  ;;          (com.magic.api.connection HttpClientConnection)
-  ;;          (com.magic.api MagicAPI)))
+  (:use [leinjacker.eval :only (eval-in-project)])
+  (:require [clojure.string :as str]
+            [clojure.java.io :as io]
+            leiningen.deps))
 
 (def ^{:dynamic true} *app* nil)
 
-(defn- space-key [k longest-key]
-  (apply str k ":" (repeat (- longest-key (count k)) " ")))
+(defn ensure-handler-set!
+  "Ensure the :handler option is set in the project map."
+  [project]
+  (when-not (-> project :ring :handler)
+    (println
+     (str "Missing Ring :handler option in project map.\n\n"
+          "You need to have a line in your project.clj file that looks like:\n"
+          "  :ring {:handler your.app/handler}"))
+    (System/exit 1)))
 
-(defn print-map [m]
-  (let [longest-key (apply max (map count (keys m)))]
-    (doseq [[k v] m]
-      (println (space-key k longest-key) v))))
+(defn source-file [project namespace]
+  (io/file (:compile-path project)
+           (-> (str namespace)
+               (str/replace "-" "_")
+               (str/replace "." java.io.File/separator)
+               (str ".clj"))))
 
-(defn prompt [prompt]
-  (print prompt)
-  (flush)
-  (let [response (read-line)]
-    (or (empty? response)
-        (.startsWith response "y")
-        (.startsWith response "Y"))))
+(defn compile-form
+  "Compile the supplied form into the target directory."
+  [project namespace form]
+  ;; We need to ensure that deps has already run before we write anything
+  ;; to :target-dir, which is otherwise cleaned by deps if it runs for
+  ;; the first time as a side effect of eval-in-project Ideally,
+  ;; generated sources would be going into a dedicated directory and thus
+  ;; be immune from the lifecycle around :target-dir; that would be
+  ;; straightforward using lein 2.x middlewares, but not so easy with 1.x.
+  (leiningen.deps/deps project)
+  (let [out-file (source-file project namespace)]
+    (.mkdirs (.getParentFile out-file))
+    (with-open [out (io/writer out-file)]
+      (binding [*out* out] (prn form))))
+  (eval-in-project project
+    `(do (clojure.core/compile '~namespace) nil)
+    nil))
 
-(defn credentials-file []
-  (io/file (System/getProperty "user.home") ".magic" "credentials"))
-
-;; (defn get-credentials []
-;;   (let [cred (credentials-file)]
-;;     (when-not (.exists cred)
-;;       ;; using runtime resolve to avoid circular dependency
-;;       (require 'leiningen.magic.login)
-;;       ((resolve 'leiningen.magic.login/login)))
-;;     (.split (slurp cred) "\n")))
-
-;; (defn api []
-;;   (MagicAPI/with (HttpClientConnection. (second (get-credentials)))))
-
-(defn current-app-name []
-  (or *app*
-      (->> (io/file ".git/config")
-           slurp
-           (re-find #"git@magic.com:(.+).git")
-           second)))
-
-;; (defn app-api []
-;;   (.app (api) (current-app-name)))
-
-;; TODO: anything using this should be exposed as a method on MagicAPI?
-;; (defn execute [command]
-;;   (-> (second (get-credentials))
-;;       (com.magic.api.connection.HttpClientConnection.)
-;;       (.execute command)))
+(defn update-project
+  "Update the project map using a function."
+  [project func & args]
+  (vary-meta
+   (apply func project args)
+   update-in [:without-profiles] #(apply func % args)))

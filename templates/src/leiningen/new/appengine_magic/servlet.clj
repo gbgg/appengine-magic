@@ -1,14 +1,14 @@
 (ns {{name}}.{{class}}
     (:gen-class :extends javax.servlet.http.HttpServlet)
-    (:use [appengine-magic.servlet :only [make-servlet-service-method]]
+    (:use [ring.util.servlet :only [defservice]]
           [ring.middleware.params :only [wrap-params]]
           [ring.middleware.file-info :only [wrap-file-info]]
-          [ring.handler.dump :only [handle-dump]]
+;          [ring.handler.dump :only [handle-dump]]
           [compojure.core])
     (:require [ring.handler.dump]
               [compojure.route :as route]
-              [appengine-magic.core :as ae]
-              [appengine-magic.services.user :as aeu]
+              [appengine-magic.kernel :as ae]
+;              [appengine-magic.services.user :as aeu]
               [clojure.pprint :as pp]
               [clojure.tools.logging :as log :only [debug info]]))
 
@@ -33,7 +33,4 @@
       ))
 
 (println "prepping {{name}}-{{class}} servlet")
-(ae/def-appengine-app {{name}}-{{class}} #'{{class}}-handler)
-
-(defn -service [this request response]
-  ((make-servlet-service-method {{name}}-{{class}}) this request response))
+(defservice {{class}}-handler)

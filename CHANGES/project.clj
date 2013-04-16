@@ -4,21 +4,37 @@
   :url http://example.com/FIXME
   :java-source-paths ["src/main/java"]
   :javac-options ["-nowarn" "-target" "1.7" "-source" "1.6" "-Xlint:-options"]
+;; from std build.xml: project.classpath
   :resource-paths ["war/WEB-INF/classes/"
-                   "war/WEB-INF/lib/*"
-;;                   "war/WEB-INF/sdk/lib/*"
-;; definitely not "war/WEB-INF/sdk/lib/impl/*"
-;;                   "war/WEB-INF/sdk/lib/user/*"
-                   ;; "war/WEB-INF/sdk/*"
-                   ;; "war/WEB-INF/sdk/*"
-                   ]
+                   "war/WEB-INF/lib/**/*.jar"
+                   "/usr/local/java/appengine/lib/shared/**/*.jar"
+;;                   "war/WEB-INF/sdk/lib/shared/**/*.jar"]
+
+;; TESTING: from https://developers.google.com/appengine/docs/java/tools/localunittesting:
+;; MyFirstTest demonstrates the simplest possible test setup, and for tests that have no dependency on App Engine APIs or local service implementations, you may not need anything more. However, if your tests or code under test have these dependencies, add the following JAR files to your testing classpath:
+
+;; ${SDK_ROOT}/lib/impl/appengine-api.jar
+;; ${SDK_ROOT}/lib/impl/appengine-api-labs.jar
+;; ${SDK_ROOT}/lib/impl/appengine-api-stubs.jar
+;; These JARs make the runtime APIs and the local implementations of those APIs available to your tests.
+
+;; App Engine services expect a number of things from their execution environment, and setting these things up involves a fair amount of boilerplate code. Rather than set it up yourself, you can use the utilities in the com.google.appengine.tools.development.testing package. To use this package, add the following JAR file to your testing classpath:
+
+;; ${SDK_ROOT}/lib/testing/appengine-testing.jar
+
   :jvm-opts ["-javaagent:war/WEB-INF/sdk/lib/agent/appengine-agent.jar"
              "-Xbootclasspath/p:war/WEB-INF/lib/appengine-dev-jdk-overrides.jar"
-             "-Ddatastore.auto_id_allocation_policy=scattered"
+             "-Ddatastore.auto_id_allocation_policy=scattered" ;; or 'sequential'
+;; see https://developers.google.com/appengine/docs/java/tools/devserver
+             "-Ddatastore.default_high_rep_job_policy_unapplied_job_pct=20"
              "-Dappengine.sdk.root=war/WEB-INF/sdk"
              "-D--property=kickstart.user.dir=/Users/gar/private/sib/web/sibawayhi/lex.magic/"
              "-D--enable_all_permissions=true"
              "-Djava.awt.headless=true"]
+;; from https://developers.google.com/appengine/docs/java/tools/ant#Running_the_Development_Server
+;; -Xdebug
+;; -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9999
+
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :repl-options {:port 4005

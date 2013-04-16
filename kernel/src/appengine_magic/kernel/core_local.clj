@@ -1,4 +1,4 @@
-(in-ns 'appengine-magic.lib)
+(in-ns 'appengine-magic.kernel)
 
 (use 'appengine-magic.kernel.local-env-helpers
      '[appengine-magic.kernel.servlet :only [servlet]]
@@ -19,6 +19,12 @@
 ;;; appengine-magic core API functions
 ;;; ----------------------------------------------------------------------------
 
+;; this makes an assumption about current dir and about name of war
+;; dir; better to use the project map for it.  also, this is called by
+;; (the expansion of) def-appengine-app (aka defServlet) so it's
+;; called at runtime by each servlet.  but it's a static value so it
+;; can be supplied at server startup time.
+
 (defn default-war-root []
   (-> (clojure.lang.RT/baseLoader)
       (.getResource ".")
@@ -35,7 +41,12 @@
           ((wrap-file-info (wrap-file app war-root)) req)))))
 
 
-(defmacro def-appengine-app [app-var-name handler & {:keys [war-root]}]
+;; NOT NEEDED
+;;(defmacro def-appengine-app [app-var-name handler & {:keys [war-root]}]
+;; this is designed to feed into ae/start, ae-serve
+;; i.e. tightly bound to that env in order to pass war-root etc.
+;; better: just make a servlet
+(defmacro defServlet [app-var-name handler & {:keys [war-root]}]
   `(def ~app-var-name
         (let [handler# ~handler
               war-root-arg# ~war-root
@@ -49,4 +60,12 @@
 
 
 
+;; this is just for the repl?  in prod, app-servlet var not used?
+;; (ae/def-appengine-app app-servlet #'request-handler)
 
+;; result of this is used in prod
+;; (defn -service [this request response]
+;;   ((make-servlet-service-method app-servlet) this request response))
+
+;; the idea of ring is to install ring routers/handlers via the
+;; service method of the servlet api

@@ -48,7 +48,7 @@
                :welcome "index.html"
                :sdk sdk
                :war "war"
-               ;; we only install to src dirs, leave config to gaem plugin
+               ;; we only install to src dirs, leave config to magic plugin
                :statics_src "src/main/public"
                :resources_src "src/main/resource"
                :year (year)
@@ -80,6 +80,8 @@
                  ["doc/intro.md" (render "intro.md" data)]
                  [".gitignore" (render "gitignore" data)]
 
+                 ["src/main/java/com/google/apphosting/utils/security/SecurityManagerInstaller.java" (render "SecurityManagerInstaller.java" data)]
+
                  ;; NB: treatment of '-', '_', '/', and '.'
                  ;; "lein new appengine-magic foo-bar" yields:
                  ;; src:  ns foo-bar.core in  src/foo_bar/core.clj
@@ -98,7 +100,7 @@
                   (render "web.xml.mustache")]
 
                  ;; resources install to source tree
-                 ;; gaem plugin "config" task will copy to war tree
+                 ;; magic plugin "config" task will copy to war tree
 
                  ["{{statics_src}}/{{welcome}}"
                   (render "home.html" (conj {:loc "Home"} data))]

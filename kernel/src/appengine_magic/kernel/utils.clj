@@ -8,7 +8,6 @@
             transform.TransformerFactory transform.dom.DOMSource
             transform.stream.StreamResult]))
 
-
 ;;; TODO: In Clojure 1.3, stop using this macro.
 ;;; Adapted from: http://groups.google.com/group/clojure/msg/5206fac13144ea99
 (defmacro record
@@ -24,7 +23,6 @@
        (merge (.newInstance constructor#
                             (make-array Object number-constructor-parameters#))
               ~vals-map))))
-
 
 (defn copy-stream [^InputStream input, ^OutputStream output]
   (with-open [^ReadableByteChannel in-channel (Channels/newChannel input)

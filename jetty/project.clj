@@ -1,5 +1,5 @@
-(defproject appengine-magic/server "0.6.0-SNAPSHOT"
-  :description "repl server for appengine-magic sdk"
+(defproject appengine-magic/jetty "0.6.0-SNAPSHOT"
+  :description "jetty-based non-servlet webserver for appengine-magic sdk"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
@@ -24,10 +24,4 @@
                  [org.apache.geronimo.specs/geronimo-jsp_2.1_spec "1.0.1"]
                  [javax.servlet/jstl "1.1.2"] ; repackaged-appengine-jakarta-jstl-1.1.2.jar
                  [taglibs/standard "1.1.2"] ; repackaged-appengine-jakarta-standard-1.1.2.jar
-                 [commons-el "1.0"]
-                 ;; main App Engine libraries
-                 [com.google.appengine/appengine-api-1.0-sdk "1.7.6"]
-                 [com.google.appengine/appengine-api-labs "1.7.6"]
-                 [com.google.appengine/appengine-api-stubs "1.7.6"]
-                 [com.google.appengine/appengine-testing "1.7.6"]
-                 [com.google.appengine/appengine-tools-sdk "1.7.6"]])
+                 [commons-el "1.0"]])

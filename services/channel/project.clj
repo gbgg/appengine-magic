@@ -1,14 +1,13 @@
-(defproject appengine-magic/service/channel "0.6.0-SNAPSHOT"
+(defproject appengine-magic/service/magic-channel "0.6.0-SNAPSHOT"
   :description "Google App Engine sdk for Clojure."
   :url "https://github.com/gcv/cupboard"
   :min-lein-version "2.0.0"
   :repositories {"releases" "http://appengine-magic-mvn.googlecode.com/svn/releases/"
                  "snapshots" "http://appengine-magic-mvn.googlecode.com/svn/snapshots/"}
   :exclusions [org.clojure/clojure]
-  :jar-name "magic-channel.jar"
   :plugins [[lein-sub "0.2.1"]
             [codox "0.6.4"]]
-  :dependencies [[appengine-magic/lib "0.6.0-SNAPSHOT"]
+  :dependencies [[appengine-magic/kernel "0.6.0-SNAPSHOT"]
                  [org.clojure/clojure "1.5.1"]
 ;                 [ring/ring-core "1.1.0"]
                  [org.apache.commons/commons-exec "1.1"]

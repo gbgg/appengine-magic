@@ -1,14 +1,16 @@
-(defproject appengine-magic/lib "0.6.0-SNAPSHOT"
+(defproject appengine-magic/kernel "0.6.0-SNAPSHOT"
   :description "Google App Engine sdk for Clojure."
   :url "https://github.com/gcv/cupboard"
   :min-lein-version "2.0.0"
   :repositories {"releases" "http://appengine-magic-mvn.googlecode.com/svn/releases/"
                  "snapshots" "http://appengine-magic-mvn.googlecode.com/svn/snapshots/"}
   :exclusions [org.clojure/clojure]
+  :aot [#"kernel.*"]
   :plugins [[lein-sub "0.2.1"]
             [codox "0.6.4"]]
-  :dependencies [[org.clojure/clojure "1.4.0"]
-                 [ring/ring-core "1.1.0"]
+  :dependencies [[org.clojure/clojure "1.5.1"]
+                 [ring/ring-core "1.2.0-beta1"]
+                 [ring/ring-servlet "1.2.0-beta1"]
                  [org.apache.commons/commons-exec "1.1"]
                  ;; App Engine supporting essentials
                  [javax.servlet/servlet-api "2.5"]

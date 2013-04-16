@@ -1,12 +1,18 @@
 (ns leiningen.magic.config
   "config - a magic subtask for configuring a gae app"
-  (:import java.io.File)
+  (:import [java.io File])
   (:require [clojure.java.io :as io]
             [stencil.core :as stencil]
             [leiningen.classpath :as cp]
             [leiningen.new.templates :as tmpl]
             [leiningen.core [eval :as eval] [main :as main]]
             [clojure.string :as string]))
+
+(defn classpath
+  []
+  (let [cp (System/getProperty "java.class.path")
+        cps (clojure.string/split cp #":")]
+    (doseq [p cps] (println p))))
 
 (defn copy-tree [from to]
   ;; (println "\nFiles in " from " to " to)
@@ -30,7 +36,11 @@
 (def render-text stencil/render-string)
 (defn renderer [name]
   (fn [template & [data]]
+;;orig: (let [path (string/join "/" ["leiningen" "new" (sanitize name) template])]
     (let [path (string/join "/" [name template])
+          cpath  (.getCanonicalPath (io/file path))
+          ;; p (println (str "canonical path: " cpath))
+          ;; iof (println (tmpl/slurp-resource cpath))
           ;; a (println (str "+name: " name))
           ;; b (println (str "template: " template))
           ;; c (println (str "path: " path))
@@ -80,6 +90,7 @@ change (e.g. change the version number), edit the project.clj and then
 run 'lein magic config'."
   [project & args]
   (do
+    ;(println (str "classpath: " (classpath)))
     ;; (println (str "compiling " (:name project)))
     ;; (jar/jar project)
     (let [render (renderer ".") ;; (:name project))
@@ -141,6 +152,7 @@ run 'lein magic config'."
 
                  ["{{war}}/WEB-INF/appengine-web.xml"
                   (render "etc/appengine-web.xml.mustache" data)]
+
                  ;; (render (str "etc" (:name project)
                  ;;              "/appengine-web.xml.mustache")
                  ;;         data)]

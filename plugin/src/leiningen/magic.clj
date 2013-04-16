@@ -17,8 +17,8 @@ standard :target-path to decide where to put the jar.  This plugin also supports
             [leiningen.magic.config :as config]
             [leiningen.magic.deploy :as deploy]
             [leiningen.magic.delein :as delein]
-            [leiningen.magic.devserver :as devserver]
-            [leiningen.magic.jetty :as jetty]
+            [leiningen.magic.gserver :as gserver]
+            [leiningen.magic.repl :as repl]
             [leiningen.magic.util :as util]
             [clojure.tools.cli :as cli]
             [clojure.tools.logging :as log :only [debug info]]))
@@ -59,7 +59,8 @@ standard :target-path to decide where to put the jar.  This plugin also supports
   ([task] (resolve-task task #'task-not-found)))
 
 (defn #^{:subtasks [#'clean/clean #'config/config
-                    #'devserver/devserver #'jetty/jetty
+                    #'gserver/gserver
+                    #'repl/repl
                     #'delein/delein
                     #'deploy/deploy]}
   magic
